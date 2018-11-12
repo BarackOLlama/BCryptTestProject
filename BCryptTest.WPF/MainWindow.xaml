@@ -1,0 +1,18 @@
+﻿<Window x:Class="BCryptTest.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BCryptTest.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="200" Width="350"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+    <StackPanel>
+        <Label>Username:</Label>
+        <TextBox Text="{Binding Path=Account.Username, Mode=TwoWay}"></TextBox>
+        <Label>Password:</Label>
+        <TextBox Text="{Binding Path =Account.Password, Mode=TwoWay}"></TextBox>
+        <Label Content="{Binding Message}"></Label>
+        <Button Command="{Binding VerifyLoginCommand}" CommandParameter="{Binding VerifyLoginCommand}">Login</Button>
+    </StackPanel>
+</Window>
