@@ -39,6 +39,7 @@ namespace BCryptTest.WPF.ViewModel
             {
                 username = Account.Username;
                 password = Account.Password;
+                //check whether there's there's any such username in the database.
                 var findSalt = context.Accounts.Where(e => e.username == username).FirstOrDefault();
                 salt = findSalt?.salt;
 
@@ -49,8 +50,10 @@ namespace BCryptTest.WPF.ViewModel
                     return;
                 }
 
+                //get the salted version of the user input with the salt from the account in the database
                 string saltedPW = BCrypt.Net.BCrypt.HashPassword(password, salt);
 
+                //check whether there's any account in the database with that username/password combination
                 var findUser = context.Accounts.Where(e => e.username == username && e.password == saltedPW).FirstOrDefault();
 
                 if(findUser == null)
@@ -67,8 +70,20 @@ namespace BCryptTest.WPF.ViewModel
 
         public void CreateNewAccount()
         {
-            //purely for demonstrative purposes
-            //
+            //for demonstrative purposes
+
+            string username = "gebruikersnaam";
+            string password = "wachtwoord";
+            string salt = BCrypt.Net.BCrypt.GenerateSalt();
+            string saltedPW = BCrypt.Net.BCrypt.HashPassword(password, salt);
+
+            using (var context = new BCryptTestEntities())
+            {
+                //You do not ever save the plaintext (var password) in the database, only the salted
+                context.Accounts.Add(new Account() {Id = 0, username = username, password = saltedPW, salt = salt });
+                context.SaveChanges();
+            }
+            
         }
     }
 }
